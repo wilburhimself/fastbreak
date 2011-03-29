@@ -1,5 +1,4 @@
 <?php
-
 Abstract class Controller {
     private $data = array();
     private $loader;
@@ -37,7 +36,7 @@ Abstract class Controller {
         $this->data[$k] = $v;
     }
     
-    function __destruct() {
+    public function __destruct() {
         if ($this->render_type == 'none' or $this->render_type == 'text') exit();
         $t = new Template($this->view);
         $t->load_vars($this->data);
@@ -66,6 +65,22 @@ Abstract class Controller {
             print $output;
 
             print $time;
+        }
+    }
+
+    public static function factory($controller) {
+        $c = new $controller;
+        $c->clas = $controller;
+        return $c;
+    }
+
+    public function call_action($action, $params=null) {
+        $this->view = $this->clas.DIRECTORY_SEPARATOR.$action;
+        if(is_callable(array($this, $action) == false)) {
+            // redirect_to('error', 'no_encontrada');
+        } else {
+            $new = sizeof($params) > 0 ? array_merge(array(), $params) : null;
+            $this->$action($new);
         }
     }
 }

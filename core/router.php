@@ -28,20 +28,11 @@ class router {
         if(!is_file($file) or !is_readable($file)) {
             // redirect_to('error', 'no_encontrada');
         } else {
-            include $file;
+            require_once $file;
         }
         
-        $cont = $this->controller;
-        $controller = new $cont;
-        $controller->clas = $this->controller;
-        $controller->view = $this->controller.DIRECTORY_SEPARATOR.$this->action;
-        if(is_callable(array($controller, $this->action) == false)) {
-            // redirect_to('error', 'no_encontrada');
-        } else {
-            $action = $this->action;
-            $new = sizeof($this->params) > 0 ? array_merge(array(), $this->params) : null;
-            $controller->$action($new);
-        }
+        $controller = Controller::factory($this->controller);
+        $controller->call_action($this->action, $this->params);
     }
 
     private function filter_uri() {
