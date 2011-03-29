@@ -88,7 +88,7 @@
                         <li><p>Add more actions to this controller in the file <code class="path">controllers/index.php</code>, or create new controllers in the folder <code class="path">controllers</code></p></li>
                         <li><p>Edit this template in the file <code class="path">views/index/index.php</code></p></li>
                         <li><p>Include your database connection information in <code class="path">config/database.php</code></p></li>
-                        <li><a href="http://fastbreakphp.com">Read the documentation.</a></li>
+                        <li><a href="https://github.com/wilburhimself/Fastbreak/wiki">Read the documentation.</a></li>
                     </ol>
                 </div>
             </div>
@@ -98,12 +98,12 @@
                 <ul>
                     <li><a href="#">Mailing list</a></li>
                     <li><a href="#">Official Weblog</a></li>
-                    <li><a href="#">Wiki</a></li>
+                    <li><a href="https://github.com/wilburhimself/Fastbreak/wiki">Wiki</a></li>
                 </ul>
 
                 <h3>Browse the documentation</h3>
                 <ul>
-                    <li><a href="#">Fastbreak Documentation</a></li>
+                    <li><a href="https://github.com/wilburhimself/Fastbreak/wiki">Fastbreak Documentation</a></li>
                     <li><a href="#">Fastbreak API</a></li>
                     <li><a href="#">PHP Documentation</a></li>
 
