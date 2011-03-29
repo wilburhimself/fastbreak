@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+body {
+  line-height: 1.3;
+  font-size: 62.3%;
+  font-family: Tahoma, sans-serif;
+  color: #444444;
+  padding-top: 8px;
+  background: #eeeeff url(http://static.tumblr.com/l3zugnz/YbHkvwe99/postage.png) repeat-x 0 0;
+}
+body a { color: #000000; }
+body h1 {
+  font-size: 24px;
+  padding-bottom: 6px;
+}
+body p { padding-bottom: 12px; }
+body ol {
+  list-style-type: decimal;
+  font-size: 18px;
+  margin: 22px 0 0 0;
+}
+body ol li {
+  color: #bbbbbb;
+  padding-bottom: 16px;
+}
+body ol li p { color: #111111; }
+body ul {
+  list-style: none;
+  margin-bottom: 22px;
+}
+#wrap {
+  font-size: 1.3em;
+  width: 760px;
+  margin: 0 auto;
+}
+#wrap #header {
+  position: relative;
+  padding: 30px 0 0 30px;
+  margin: 0;
+  border-bottom: 1px solid #dddddd;
+}
+#wrap #header #new-job {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  display: inline-block;
+  padding: 5px 10px;
+  background: #336699;
+  color: #ffffff;
+  font-weight: bold;
+}
+#wrap #main-content #instructions {
+  background: #ffffff;
+  border: 1px solid #bbbbbb;
+  padding: 22px;
+  margin: 0 0 30px;
+}
+#wrap #main-content #instructions .job-form p { padding-bottom: 18px; }
+#wrap #main-content #instructions .job-form p label {
+  display: block;
+  font-weight: bold;
+}
+#wrap #main-content #instructions .job-form p textarea {
+  padding: 4px;
+  width: 450px;
+}
+#wrap #main-content #instructions .job-form p input[type=text] {
+  padding: 4px;
+  width: 450px;
+}
+#wrap #main-content #instructions .job-form p textarea { height: 200px; }
+#wrap #main-content #instructions .item { border-bottom: 1px dotted #f0f0f0; }
+#wrap #main-content #instructions .item a.job-link {
+  padding: 11px 22px;
+  display: block;
+  text-decoration: none;
+  color: #999999;
+}
+#wrap #main-content #instructions .item a.job-link:hover { background: #f0f0f0; }
+#wrap #main-content #instructions .item a.job-link span { color: #000000; }
+#wrap #main-content #instructions .item a.job-link .location {
+  font-weight: bold;
+  margin-right: 12px;
+}
+#wrap #main-content #instructions .item a.job-link .title { text-decoration: underline; }
+#wrap #main-content #instructions .item a.job-link .posted-in { float: right; }
+#wrap #main-content #instructions .job-display #job-header {
+  padding: 22px 0;
+  border-bottom: 1px dotted #f0f0f0;
+  margin-bottom: 22px;
+}
+#wrap #main-content #instructions .job-display #job-apply {
+  margin-top: 22px;
+  padding: 22px;
+  background: #f0f0f0;
+}
+#wrap #main-content #instructions .job-display .links { padding-bottom: 30px; }
+#wrap #main-content #instructions .job-display .links:after {
+  content: ".";
+  display: block;
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+#wrap #main-content #instructions .job-display .links .back { float: left; }
+#wrap #main-content #instructions .job-display .links .next { float: right; }
+#wrap #main-content #instructions .category-block {
+  border-top: 3px solid #444444;
+  padding-top: 9px;
+}
+#wrap #main-content #instructions .category-block h3 { font-size: 1.5em; }
