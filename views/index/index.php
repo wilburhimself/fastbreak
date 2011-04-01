@@ -79,7 +79,7 @@
 
             <div id="main-content">
                 <div id="header">
-                    <h1>Congratulations!</h1>
+                    <h1><?php print anchor('Congratulations', Router::get('home')); ?></h1>
                     <p>Your Fastbreak application is running.</p>
                 </div>
                 <div id="instructions">

@@ -3,9 +3,11 @@ class router {
     private $path; // Controller's routes
     private $params;
     private $args = array(); // Action's arguments
+    public static $rs;
 
     public function __construct($routes) {
         $this->routes = $routes;
+        self::$rs = $routes;
         $this->uri_string = key($_GET);
         $this->uri_string = substr($this->uri_string, 1);
         $this->set_path(CONTROLLERSPATH);
@@ -101,6 +103,14 @@ class router {
     private function get_params() {
         if(sizeof($this->route_parts) > 0) {
             $this->params = $this->route_parts;
+        }
+    }
+
+    public static function get($named_route) {
+        if (in_array($named_route, array_keys(self::$rs))) {
+            if (is_array(self::$rs[$named_route])) {
+                return self::$rs[$named_route][$named_route];
+            }
         }
     }
 }

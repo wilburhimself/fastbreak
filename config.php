@@ -1,5 +1,5 @@
 <?php
-define('SITEURL', $_SERVER['DOCUMENT_ROOT']); // The URL for your application
+define('SITEURL', 'http://localhost/ffr/'); // The URL for your application
 
 define('DIRSEP', DIRECTORY_SEPARATOR);
 $site_path = realpath(dirname(__FILE__).DIRSEP).DIRSEP;
