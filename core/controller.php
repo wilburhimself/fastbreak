@@ -76,7 +76,7 @@ Abstract class Controller {
 
     public function call_action($action, $params=null) {
         $this->view = $this->clas.DIRECTORY_SEPARATOR.$action;
-        if(is_callable(array($this, $action) == false)) {
+        if(is_callable(array($this, $action)) == false) {
             // redirect_to('error', 'no_encontrada');
         } else {
             $new = sizeof($params) > 0 ? array_merge(array(), $params) : null;

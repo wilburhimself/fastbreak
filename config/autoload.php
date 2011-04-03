@@ -1,9 +1,10 @@
 <?php
-    load_helper(array(
+    helper(array(
         'url', 'html', 'form', 'validation', 'dates',
     ));
 
     function __autoload($class_name) {
+        $class_name = strtolower($class_name);
         if(file_exists(COREPATH.$class_name.'.php')) {
             require_once COREPATH.$class_name.'.php';
         }
@@ -12,5 +13,8 @@
         }
         if(file_exists(MODELSPATH.$class_name.'.php')) {
             require_once MODELSPATH.$class_name.'.php';
+        }
+        if(file_exists(FORMSPATH.$class_name.'.php')) {
+            require_once FORMSPATH.$class_name.'.php';
         }
     }

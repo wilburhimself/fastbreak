@@ -12,6 +12,9 @@ define('MODELSPATH', SITEPATH.'models'.DIRSEP);
 define('VIEWSPATH', SITEPATH.'views'.DIRSEP);
 define('HELPERSPATH', SITEPATH.'helpers'.DIRSEP);
 define('CONFIGPATH', SITEPATH.'config'.DIRSEP);
+define('FORMSPATH', SITEPATH.'forms'.DIRSEP);
+define('LIBRARIESPATH', SITEPATH.'libraries'.DIRSEP);
+
 // funciones principales
 require_once COREPATH.'loader.php';
 require_once CONFIGPATH . 'database.php';

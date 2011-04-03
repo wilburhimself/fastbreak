@@ -8,7 +8,7 @@ class Loader {
         return $this->classes[$class];
     }
 }
-function load_helper($helper) {
+function helper($helper) {
     if (is_array($helper)) {
         foreach ($helper as $h) {
             if (file_exists(COREPATH.'helpers'.DIRECTORY_SEPARATOR.$h.'_helper.php')) {
@@ -19,6 +19,22 @@ function load_helper($helper) {
         }
     } else {
         require_once HELPERSPATH.$helper.'_helper.php';
+    }
+}
+function model($model) {
+    require_once MODELSPATH.$model.'.php';
+}
+function library($library) {
+    if (is_array($library)) {
+        foreach ($library as $l) {
+            if (is_dir(LIBRARIESPATH.$l)) {
+                require_once(LIBRARIESPATH.$l.'.php');
+            } else {
+                die('Failed to load library '.$l);
+            }
+        }
+    } else {
+        require_once(LIBRARIESPATH.$library.'.php');
     }
 }
 // obtiene la conexi�n existente a la base de datos

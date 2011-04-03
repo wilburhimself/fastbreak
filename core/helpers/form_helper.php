@@ -44,6 +44,26 @@
         if ($field['type'] == 'text') {
             $output .= '<textarea name="object['.$label.']" id="object_'.$label.'">'.$value.'</textarea>';
         }
+
+        if ($field['type'] == 'field') {
+            $output .= '<input id="object_'.$label.'" type="field" name="object['.$label.']" />';
+        }
         return $output;
+
+    }
+
+
+    function form_open($url=null) {
+        $url = isset($url) ? $url : $_SERVER['REQUEST_URI'];
+        return '<form action="'.base_url($url).'">';
+    }
+
+    function form_open_multipart($url=null) {
+        $url = isset($url) ? $url : $_SERVER['REQUEST_URI'];
+        return '<form action="'.base_url($url).'" enctype="multipart/form-data">';
+    }
+
+    function form_close() {
+        return '</form>';
     }
 ?>
