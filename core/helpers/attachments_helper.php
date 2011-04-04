@@ -13,3 +13,8 @@ function prepare_path($type, $id) {
     }
     return $upload_path;
 }
+
+function upload_to($type, $id, $file, $field) {
+    $path = prepare_path($type, $id);
+    $file_info = File::Factory($file, $path, $field);
+}

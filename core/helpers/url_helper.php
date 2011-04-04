@@ -5,7 +5,7 @@ function base_url($link=null) {
     return SITEURL.$link;
 }
 
-// redirecciona al usuario a una página determinada
+// redirecciona al usuario a una pï¿½gina determinada
 
 function redirect($url) {
     $u = is_object($url) ? $url->permallink() : $url;
@@ -19,6 +19,7 @@ function redirect_to($controller, $action, $params=null) {
 // crea una direccion que se acopla a los standares de nuestra aplicacion
 function construct_url($controller=null, $action=null, $params=null) {
     $attributes = array('htmlclass', 'htmlid', 'htmlrel', 'htmltitle');
+    $output = '';
     if(!isset($controller) or $controller == '') {
         $controller = 'index';
     } else {
