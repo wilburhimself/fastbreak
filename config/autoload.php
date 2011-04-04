@@ -1,6 +1,6 @@
 <?php
     helper(array(
-        'url', 'html', 'form', 'validation', 'dates',
+        'url', 'html', 'form', 'validation', 'dates', 'attachments'
     ));
 
     function __autoload($class_name) {

@@ -5,7 +5,7 @@
             $form[] = errors($model->errors);
         }
         foreach ($model->fields as $label => $field) {
-            if ($field['type'] == "string" || $field['type'] == "text") {
+            if ($field['type'] == "string" || $field['type'] == "text" || $field['type'] == 'file') {
                 $form[] = '<p>'.create_field($label, $field, $model->$label).'</p>';
             } elseif ($field['type'] == 'foreign') {
                 $form[] = '<p>'.collection_select($model, $field).'</p>';
@@ -45,8 +45,8 @@
             $output .= '<textarea name="object['.$label.']" id="object_'.$label.'">'.$value.'</textarea>';
         }
 
-        if ($field['type'] == 'field') {
-            $output .= '<input id="object_'.$label.'" type="field" name="object['.$label.']" />';
+        if ($field['type'] == 'file') {
+            $output .= '<input id="object_'.$label.'" type="file" name="object['.$label.']" />';
         }
         return $output;
 
@@ -59,8 +59,8 @@
     }
 
     function form_open_multipart($url=null) {
-        $url = isset($url) ? $url : $_SERVER['REQUEST_URI'];
-        return '<form action="'.base_url($url).'" enctype="multipart/form-data">';
+        $url = isset($url) ? $url : '.';
+        return '<form action="'.base_url($url).'" enctype="multipart/form-data" method="post">';
     }
 
     function form_close() {

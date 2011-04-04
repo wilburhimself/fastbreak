@@ -1,9 +1,11 @@
 <?php
 class Request {
     private $data = array();
+    public $method;
 
     public function __construct() {
         $this->get_data();
+        $this->method = $_SERVER['REQUEST_METHOD'];
     }
 
     public function is_post() {
