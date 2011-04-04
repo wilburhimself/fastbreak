@@ -83,6 +83,7 @@
                     <p>Your Fastbreak application is running.</p>
                 </div>
                 <div id="instructions">
+                    
                     <h2>Getting started:</h2>
                     <ol>
                         <li><p>Add more actions to this controller in the file <code class="path">controllers/index.php</code>, or create new controllers in the folder <code class="path">controllers</code></p></li>
