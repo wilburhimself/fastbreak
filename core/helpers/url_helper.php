@@ -40,10 +40,112 @@ function construct_url($controller=null, $action=null, $params=null) {
             }
         }
 
-        if(sizeof($calls_params) > 0) {
+        if(!empty($calls_params) and sizeof($calls_params) > 0) {
             $output .= join('/', $calls_params);
         }
     }
-
     return $output;
+}
+function pluralize($str, $force = FALSE) {
+    $str = strtolower(trim($str));
+    $end = substr($str, -1);
+
+    if ($end == 'y')
+    {
+        // Y preceded by vowel => regular plural
+        $vowels = array('a', 'e', 'i', 'o', 'u');
+        $str = in_array(substr($str, -2, 1), $vowels) ? $str.'s' : substr($str, 0, -1).'ies';
+    }
+    elseif ($end == 'h')
+    {
+        if (substr($str, -2) == 'ch' OR substr($str, -2) == 'sh')
+        {
+            $str .= 'es';
+        }
+        else
+        {
+            $str .= 's';
+        }
+    }
+    elseif ($end == 's')
+    {
+        if ($force == TRUE)
+        {
+            $str .= 'es';
+        }
+    }
+    else
+    {
+        $str .= 's';
+    }
+
+    return $str;
+}
+/**
+ * @param  $name
+ * @param  $route
+ * @return void
+ */
+function map_route($name, $route) {
+    $path = $name."_path";
+    $GLOBALS["route"] = $route;
+    if (!function_exists($path)) {
+        eval('function '.$path.'($params=null){
+            $p = "'.$GLOBALS["route"].'";
+            return $p;
+        }');
+    }
+    unset($GLOBALS['route']);
+}
+function map_resource($model) {
+    $model = strtolower($model);
+    $GLOBALS['model'] = $model;
+    $list = $model."s_path";
+    if (!function_exists($list)) {
+        eval('function '.$list.'(){
+            $controller = pluralize($GLOBALS["model"]);
+            return construct_url($controller, "index");
+        }');
+    }
+
+    $create = $model."_create_path";
+    if (!function_exists($create)) {
+        eval('function '.$create.'(){
+            $controller = pluralize($GLOBALS["model"]);
+            return construct_url($controller, "create");
+        }');
+    }
+
+    $show = $model."_path";
+    if (!function_exists($show)) {
+        eval('function '.$show.'($model){
+            $controller = pluralize($model->type);
+            return construct_url($controller, "show", array("id" => $model->id));
+        }');
+    }
+
+    $edit = $model."_edit_path";
+    if (!function_exists($edit)) {
+        eval('function '.$edit.'($model){
+            $controller = pluralize($model->type);
+            return construct_url($controller, "edit", array("id" => $model->id));
+        }');
+    }
+
+    $delete = $model."_delete_path";
+    if (!function_exists($delete)) {
+        eval('function '.$delete.'($model){
+            $controller = pluralize($model->type);
+            return construct_url($controller, "delete", array("id" => $model->id));
+        }');
+    }
+
+    $save = $model."_save_path";
+    if (!function_exists($save)) {
+        eval('function '.$save.'($model){
+            $controller = pluralize($model->type);
+            return construct_url($controller, "save");
+        }');
+    }
+    unset($GLOBALS['model']);
 }
