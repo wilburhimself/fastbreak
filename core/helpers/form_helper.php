@@ -5,7 +5,7 @@
             $form[] = errors($model->errors);
         }
         foreach ($model->fields as $label => $field) {
-            if ($field['type'] == "string" || $field['type'] == "text" || $field['type'] == 'file') {
+            if ($field['type'] == "string" || $field['type'] == "text" || $field['type'] == 'file' || $field['type'] == 'password') {
                 $form[] = '<p>'.create_field($label, $field, $model->$label).'</p>';
             } elseif ($field['type'] == 'foreign') {
                 $form[] = '<p>'.collection_select($model, $field).'</p>';
@@ -29,7 +29,6 @@
             }
         $output .= '</select>';
         return $output;
-
     }
 
     function create_field($label, $field, $value="") {
@@ -40,6 +39,10 @@
         $output = '<label for="object_'.$label.'">'.ucwords($field['label']).'</label>';
         if ($field['type'] == 'string') {
             $output .= '<input id="object_'.$label.'" type="text" value="'.$value.'" name="object['.$label.']" />';
+        }
+
+        if ($field['type'] == 'password') {
+            $output .= '<input id="object_'.$label.'" type="password" name="object['.$label.']" />';
         }
         if ($field['type'] == 'text') {
             $output .= '<textarea name="object['.$label.']" id="object_'.$label.'">'.$value.'</textarea>';
@@ -55,7 +58,7 @@
 
     function form_open($url=null) {
         $url = isset($url) ? $url : $_SERVER['REQUEST_URI'];
-        return '<form action="'.base_url($url).'">';
+        return '<form action="'.base_url($url).'" method="post">';
     }
 
     function form_open_multipart($url=null) {

@@ -64,7 +64,7 @@ Abstract class Controller {
             $time = $this->endtime - $this->starttime;
             print $output;
 
-            print $time;
+            //print $time;
         }
     }
 

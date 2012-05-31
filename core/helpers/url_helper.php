@@ -16,6 +16,15 @@ function redirect_to($controller, $action, $params=null) {
     return header('Location: '.base_url().construct_url($controller, $action, $params));
 }
 
+function redirect_back_or_default($url=null) {
+    $default = isset($url) ? $url : base_url();
+    if ($_SERVER['HTTP_REFERER']) {
+        header('location:'.$_SERVER['HTTP_REFERER']);
+    } else {
+        header('location:'.$default);
+    }
+}
+
 // crea una direccion que se acopla a los standares de nuestra aplicacion
 function construct_url($controller=null, $action=null, $params=null) {
     $attributes = array('htmlclass', 'htmlid', 'htmlrel', 'htmltitle');

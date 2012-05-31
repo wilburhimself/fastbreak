@@ -63,6 +63,7 @@
 
         public function limit($num, $offset=null) {
             $this->limit = isset($offset) ? "{$offset}, {$num}" : $num;
+            return $this;
         }
 
         public function __call($method, $args) {
