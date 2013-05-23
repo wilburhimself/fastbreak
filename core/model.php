@@ -1,7 +1,7 @@
 <?php
     class Model {
         public $id;
-        public $pk;
+        public $pk; // used interchangeably with $id (legacy)
         protected $table_name;
         public $options;
         public $properties = array();
