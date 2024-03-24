@@ -51,20 +51,32 @@ class Router {
 
     private function _get_route(): string {
         $request = $this->filter_uri();
+
         if (isset($this->routes[$request])) {
             return $this->routes[$request];
         }
 
         foreach ($this->routes as $key => $val) {
-            $action = $val;
-            $key = str_replace(':any', '.+', str_replace(':num', '[0-9]+', $key));
-            if (preg_match('#^' . $key . '$#', $request)) {
-                if (strpos($action, '$') !== false && strpos($key, '(') !== false) {
-                    $v = preg_replace('#^' . $key . '$#', $action, $request);
+            if ($key === $request) {
+                return $val;
+            }
+
+            if (strpos($key, ':') !== false) {
+                $regex = str_replace(
+                    ['/', ':any', ':num'],
+                    ['\/', '.+', '[0-9]+'],
+                    $key
+                );
+                $regex = '#^' . $regex . '$#';
+
+                if (preg_match($regex, $request)) {
+                    $action = str_replace([':any', ':num'], ['.+', '[0-9]+'], $val);
+                    $v = preg_replace($regex, $action, $request);
                     return $v;
                 }
             }
         }
+
         return $request;
     }
 

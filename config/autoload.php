@@ -1,7 +1,7 @@
 <?php
-    helper(array(
+    helper([
         'url', 'html', 'form', 'validation', 'dates', 'attachments'
-    ));
+    ]);
 
     function autoload($class_name) {
         $class_name = strtolower($class_name);
