@@ -7,6 +7,8 @@ Abstract class Controller {
     private $cache_time;
     private $starttime;
     private $endtime;
+    private $clas;
+    private $view;
 
     public function __construct() {
         $this->loader = new Loader;
@@ -24,18 +26,18 @@ Abstract class Controller {
         }
         return $this->loader->$var;
     }
-    
+
     public function render($type, $message=null) {
         $this->render_type = $type;
         if (isset($message)) {
             print $message;
         }
     }
-    
+
     function t($k, $v) {
         $this->data[$k] = $v;
     }
-    
+
     public function __destruct() {
         if ($this->render_type == 'none' or $this->render_type == 'text') exit();
         $t = new Template($this->view);
@@ -51,7 +53,7 @@ Abstract class Controller {
             }
             $this->layout = 'application';
         }
-        
+
         if(isset($this->layout)) {
             $t = new Template('layouts/'.$this->layout);
             $t->load_vars($this->data);

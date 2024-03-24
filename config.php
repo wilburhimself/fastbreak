@@ -1,5 +1,5 @@
 <?php
-define('SITEURL', 'http://localhost/ffr/'); // The URL for your application
+define('SITEURL', 'http://localhost/ffr/');
 
 define('DIRSEP', DIRECTORY_SEPARATOR);
 $site_path = realpath(dirname(__FILE__).DIRSEP).DIRSEP;
@@ -19,4 +19,6 @@ define('LIBRARIESPATH', SITEPATH.'libraries'.DIRSEP);
 require_once COREPATH.'loader.php';
 require_once CONFIGPATH . 'database.php';
 require_once CONFIGPATH.'autoload.php';
+
+spl_autoload_register('autoload');
 ?>

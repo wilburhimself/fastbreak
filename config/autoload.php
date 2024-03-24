@@ -3,7 +3,7 @@
         'url', 'html', 'form', 'validation', 'dates', 'attachments'
     ));
 
-    function __autoload($class_name) {
+    function autoload($class_name) {
         $class_name = strtolower($class_name);
         if(file_exists(COREPATH.$class_name.'.php')) {
             require_once COREPATH.$class_name.'.php';

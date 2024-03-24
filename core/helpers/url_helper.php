@@ -2,7 +2,7 @@
 
 // get site base url
 function base_url($link=null) {
-    return SITEURL.$link;
+    return "/{$link}";
 }
 
 // redirecciona al usuario a una p�gina determinada
