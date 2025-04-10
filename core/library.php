@@ -1,10 +1,11 @@
 <?php
+
+namespace Core;
+
 class Library {
-    private $load;
+    private Loader $load;
 
     public function __construct() {
         $this->load = new Loader();
-
-        
     }
 }

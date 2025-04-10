@@ -1,7 +1,11 @@
 <?php
 // Database connection paramaters
-define('DBNAME', '');
-define('DBUSERNAME', '');
-define('DBPASSWORD', '');
-define('DBHOST', '');
-define('ROWSPERPAGE', 10);
+namespace Config;
+
+class Database {
+    const DBNAME = 'app';
+    const DBUSERNAME = 'root';
+    const DBPASSWORD = '';
+    const DBHOST = 'localhost';
+    const ROWSPERPAGE = 10;
+}

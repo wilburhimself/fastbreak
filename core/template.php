@@ -1,7 +1,9 @@
 <?php
+
+namespace Core;
 class Template {
     private $data = array();
-    public function __construct($file) {
+    public function __construct(string $file) {
 
         $this->file = VIEWSPATH.$file.'.php';
     }
@@ -18,7 +20,7 @@ class Template {
         }
     }
 
-    public function load_vars($data) {
+    public function load_vars(array $data): void {
         foreach($data as $k => $v) {
             $this->$k = $v;
         }

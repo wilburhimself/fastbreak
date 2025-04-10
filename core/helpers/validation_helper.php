@@ -1,27 +1,34 @@
 <?php
-    function required($value) {
-        if (!empty($value)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    function is_valid($rule, $value) {
-        if (function_exists($rule)) {
-            return call_user_func($rule, $value);
-        }
+namespace Core\Helpers;
+
+class ValidationHelper
+{
+    public static function required(mixed $value): bool
+    {
+        return !empty(trim($value));
     }
 
-    function construct_message($error) {
-        return "Field ".$error['field']." is ".$error['rule'];
+    public static function isValid(string $rule, mixed $value): bool
+    {
+        $methodName = [self::class, $rule];
+        return is_callable($methodName) && call_user_func($methodName, $value);
     }
 
-    function errors($errors) {
-        $output = '<ul id="errors">';
-        foreach ($errors as $error) {
-            $output .= '<li>'.construct_message($error).'</li>';
-        }
-        $output .= '</ul>';
-        return $output;
+    public static function format_error_message(array $error): string
+    {
+        return "Field {$error['field']} is {$error['rule']}";
     }
+
+    public static function errors(array $errors): string
+    {
+        if (empty($errors)) {
+            return '';
+        }
+
+        $errorMessages = array_map([self::class, 'format_error_message'], $errors);
+        $errorListItems = array_map(fn($message) => "<li>{$message}</li>", $errorMessages);
+
+        return '<ul id="errors">' . implode('', $errorListItems) . '</ul>';
+    }
+}
 ?>

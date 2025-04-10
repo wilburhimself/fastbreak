@@ -1,13 +1,15 @@
 <?php
+
+namespace Core;
+
 class Session {
-    public function __set($key, $value) {
+    public function __set(string $key, mixed $value): void
+    {
         $_SESSION[$key] = $value;
     }
 
-    public function __get($key) {
-        if (isset($_SESSION[$key])) {
-            return $_SESSION[$key];
-        }
+    public function __get(string $key): mixed
+    {
+        return $_SESSION[$key] ?? null;
     }
-    
 }

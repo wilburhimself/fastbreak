@@ -1,36 +1,83 @@
 <?php
 
-// Construye un link siguiendo los standares de la aplicacion
-function link_to($text, $controller=null, $action=null, $params=null) {
-    $attributes = array('htmlclass', 'htmlid', 'htmlrel', 'htmltitle', 'htmlconfirm');
-    $output = '<a href="'.base_url();
-    $output .= construct_url($controller, $action, $params);
-    $output .= '"';
-    $output .= isset($params['htmlid']) ? ' id="'.$params['htmlid'].'"' : '';
-    $output .= isset($params['htmlclass']) ? ' class="'.$params['htmlclass'].'"' : '';
-    $output .= isset($params['htmlrel']) ? ' rel="'.$params['htmlrel'].'"' : '';
-    $output .= isset($params['htmltitle']) ? ' title="'.$params['htmltitle'].'"' : '';
-    $output .= isset($params['htmlconfirm']) ? ' onclick="confirm(\''.$params['htmlconfirm'].'\');"' : '';
-    $output .= '>'.$text.'</a>';
+namespace Core\Helpers;
 
-    return $output;
-}
+class HtmlHelper
+{
+    // Construye un link siguiendo los standares de la aplicacion
+    public static function linkTo(string $text, ?string $controller = null, ?string $action = null, ?array $params = null): string
+    {
+        $attributes = self::extractAttributes($params);
 
-function anchor ($text, $url, $attrs=null) {
-    $link_format = '<a href="%s" %s>%s</a>';
-    return sprintf($link_format, base_url().$url, $attrs, $text);
-}
+        $output = '<a href="' . self::generateUrl($controller, $action, $params) . '"';
+        $output .= self::buildHtmlAttributes($attributes);
+        $output .= '>' . $text . '</a>';
 
-/* add stylesheet */
-function add_css($css, $media="screen") {
-    echo '<link type="text/css" rel="stylesheet" media="'.$media.'" href="'.base_url().'assets/stylesheets/'.$css.'.css" />';
-}
-/* add stylesheet */
-function add_less($css) {
-    print '<link type="text/css" rel="stylesheet/less" href="'.base_url().'assets/stylesheets/'.$css.'.less" />';
-}
+        return $output;
+    }
 
-/* add javascript */
-function add_js($js) {
-    return '<script type="text/javascript" src="'.base_url().'assets/javascript/'.$js.'.js"></script>';
+    private static function extractAttributes(?array $params): array
+    {
+        $attributes = [];
+        if (isset($params['htmlid'])) {
+            $attributes['id'] = $params['htmlid'];
+            unset($params['htmlid']);
+        }
+        if (isset($params['htmlclass'])) {
+            $attributes['class'] = $params['htmlclass'];
+            unset($params['htmlclass']);
+        }
+        if (isset($params['htmlrel'])) {
+            $attributes['rel'] = $params['htmlrel'];
+            unset($params['htmlrel']);
+        }
+        if (isset($params['htmltitle'])) {
+            $attributes['title'] = $params['htmltitle'];
+            unset($params['htmltitle']);
+        }
+        if (isset($params['htmlconfirm'])) {
+            $attributes['onclick'] = "return confirm('" . htmlspecialchars($params['htmlconfirm'], ENT_QUOTES) . "')";
+            unset($params['htmlconfirm']);
+        }
+
+        return $attributes;
+    }
+
+    private static function generateUrl(?string $controller, ?string $action, ?array $params): string
+    {
+        return base_url() . construct_url($controller, $action, $params);
+    }
+
+    private static function buildHtmlAttributes(array $attributes): string
+    {
+        $html = '';
+        foreach ($attributes as $key => $value) {
+            $html .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES) . '"';
+        }
+        return $html;
+    }
+
+    public static function anchor(string $text, string $url, ?string $attrs = null): string
+    {
+        $link_format = '<a href="%s" %s>%s</a>';
+        return sprintf($link_format, base_url() . $url, $attrs ?? '', $text);
+    }
+
+    /* add stylesheet */
+    public static function addCss(string $css, string $media = "screen"): string
+    {
+        return '<link type="text/css" rel="stylesheet" media="' . $media . '" href="' . base_url() . 'assets/stylesheets/' . $css . '.css" />';
+    }
+
+    /* add stylesheet */
+    public static function addLess(string $css): string
+    {
+        return '<link type="text/css" rel="stylesheet/less" href="' . base_url() . 'assets/stylesheets/' . $css . '.less" />';
+    }
+
+    /* add javascript */
+    public static function addJs(string $js): string
+    {
+        return '<script type="text/javascript" src="' . base_url() . 'assets/javascript/' . $js . '.js"></script>';
+    }
 }

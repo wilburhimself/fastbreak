@@ -1,4 +1,6 @@
 <?php
+
+namespace Core;
 Abstract class Controller {
     private $data = array();
     private $loader;
@@ -34,12 +36,12 @@ Abstract class Controller {
         }
     }
 
-    function t($k, $v) {
+    public function t(string $k, mixed $v): void {
         $this->data[$k] = $v;
     }
 
     public function __destruct() {
-        if ($this->render_type == 'none' or $this->render_type == 'text') exit();
+        if ($this->render_type == 'none' || $this->render_type == 'text') return;
         $t = new Template($this->view);
         $t->load_vars($this->data);
         $return = $t->render();
@@ -70,7 +72,7 @@ Abstract class Controller {
         }
     }
 
-    public static function factory($controller) {
+    public static function factory(string $controller): Controller {
         $c = new $controller;
         $c->clas = $controller;
         return $c;

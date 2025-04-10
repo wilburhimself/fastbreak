@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Core;
+
 class Router {
     private string $path; // Controller's routes
     private array $params = [];
@@ -11,7 +13,6 @@ class Router {
     private string $controller;
     private string $action;
     private array $args = []; // Action's arguments
-    public static array $rs = [];
 
     public function __construct(array $routes) {
         $this->routes = $routes;
@@ -23,7 +24,7 @@ class Router {
 
     private function set_path(string $path): void {
         if (!is_dir($path)) {
-            exit('Ruta Invalida para el controlador'); // Maintain the error message
+            throw new \Exception('Ruta Invalida para el controlador'); // Maintain the error message
         }
         $this->path = $path;
     }
@@ -38,7 +39,7 @@ class Router {
             require_once $file;
         }
 
-        $controller = Controller::factory($this->controller);
+        $controller = \Core\Controller::factory($this->controller);
         $controller->call_action($this->action, $this->params);
     }
 
@@ -108,10 +109,10 @@ class Router {
         $this->params = $this->routeParts;
     }
 
-    public static function get(string $named_route): string {
-        if (array_key_exists($named_route, self::$rs)) {
-            if (is_array(self::$rs[$named_route])) {
-                return self::$rs[$named_route][$named_route];
+    public function get(string $named_route): string {
+        if (array_key_exists($named_route, $this->routes)) {
+            if (is_array($this->routes[$named_route])) {
+                return $this->routes[$named_route][$named_route];
             }
         }
         return ''; // Or throw an exception for a missing route

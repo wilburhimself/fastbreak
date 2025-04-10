@@ -1,28 +1,36 @@
 <?php
 
+namespace Core\Helpers;
+
+use Core\Model;
+use Core\Router;
+
 // get site base url
-function base_url($link=null) {
-    return "/{$link}";
+function base_url(?string $link = null): string
+{
+    return "/{$link}"; // Assuming base URL is the root. Adjust if needed.
 }
 
 // redirecciona al usuario a una p�gina determinada
-
-function redirect($url) {
-    $u = is_object($url) ? $url->permallink() : $url;
-    return header('Location: '.base_url().$u);
+function redirect(string $url): void
+{
+    http_response_code(302);
+    header('Location: ' . base_url() . $url);
+    exit;
 }
 
-function redirect_to($controller, $action, $params=null) {
-    return header('Location: '.base_url().construct_url($controller, $action, $params));
+function redirect_to(string $controller, string $action, ?array $params = null): void
+{
+    redirect(construct_url($controller, $action, $params));
 }
 
-function redirect_back_or_default($url=null) {
-    $default = isset($url) ? $url : base_url();
-    if ($_SERVER['HTTP_REFERER']) {
-        header('location:'.$_SERVER['HTTP_REFERER']);
-    } else {
-        header('location:'.$default);
-    }
+function redirect_back_or_default(?string $url = null): void
+{
+    $default = $url ?? base_url();
+    $location = $_SERVER['HTTP_REFERER'] ?? $default;
+    http_response_code(302);
+    header('Location: ' . $location);
+    exit;
 }
 
 // crea una direccion que se acopla a los standares de nuestra aplicacion
@@ -90,71 +98,70 @@ function pluralize($str, $force = FALSE) {
 
     return $str;
 }
-/**
- * @param  $name
- * @param  $route
- * @return void
- */
-function map_route($name, $route) {
-    $path = $name."_path";
-    $GLOBALS["route"] = $route;
-    if (!function_exists($path)) {
-        eval('function '.$path.'($params=null){
-            $p = "'.$GLOBALS["route"].'";
+
+function map_route(string $name, string $route): string
+{
+    $functionName = $name . "_path";
+    if (!function_exists($functionName)) {
+        eval('function ' . $functionName . '(?array $params = null): string {
+            $p = "' . $route . '";
             return $p;
         }');
     }
-    unset($GLOBALS['route']);
+    return $functionName;
 }
-function map_resource($model) {
+
+function generate_resource_functions(string $model): array
+{
     $model = strtolower($model);
-    $GLOBALS['model'] = $model;
-    $list = $model."s_path";
-    if (!function_exists($list)) {
-        eval('function '.$list.'(){
-            $controller = pluralize($GLOBALS["model"]);
+    $controller = pluralize($model);
+    $functions = [
+        "{$model}s_path" => function () use ($controller): string {
             return construct_url($controller, "index");
-        }');
-    }
-
-    $create = $model."_create_path";
-    if (!function_exists($create)) {
-        eval('function '.$create.'(){
-            $controller = pluralize($GLOBALS["model"]);
+        },
+        "{$model}_create_path" => function () use ($controller): string {
             return construct_url($controller, "create");
-        }');
-    }
-
-    $show = $model."_path";
-    if (!function_exists($show)) {
-        eval('function '.$show.'($model){
-            $controller = pluralize($model->type);
-            return construct_url($controller, "show", array("id" => $model->id));
-        }');
-    }
-
-    $edit = $model."_edit_path";
-    if (!function_exists($edit)) {
-        eval('function '.$edit.'($model){
-            $controller = pluralize($model->type);
-            return construct_url($controller, "edit", array("id" => $model->id));
-        }');
-    }
-
-    $delete = $model."_delete_path";
-    if (!function_exists($delete)) {
-        eval('function '.$delete.'($model){
-            $controller = pluralize($model->type);
-            return construct_url($controller, "delete", array("id" => $model->id));
-        }');
-    }
-
-    $save = $model."_save_path";
-    if (!function_exists($save)) {
-        eval('function '.$save.'($model){
-            $controller = pluralize($model->type);
+        },
+        "{$model}_path" => function (Model $m): string {
+            $controller = pluralize($m->type);
+            return construct_url($controller, "show", ["id" => $m->id]);
+        },
+        "{$model}_edit_path" => function (Model $m): string {
+            $controller = pluralize($m->type);
+            return construct_url($controller, "edit", ["id" => $m->id]);
+        },
+        "{$model}_delete_path" => function (Model $m): string {
+            $controller = pluralize($m->type);
+            return construct_url($controller, "delete", ["id" => $m->id]);
+        },
+        "{$model}_save_path" => function (Model $m): string {
+            $controller = pluralize($m->type);
             return construct_url($controller, "save");
-        }');
+        },
+    ];
+    return $functions;
+}
+
+function map_resource(string $model): array
+{
+    $functions = generate_resource_functions($model);
+    foreach ($functions as $name => $definition) {
+        if (!function_exists($name)) {
+            $reflection = new \ReflectionFunction($definition);
+            $code = $reflection->getStaticVariables();
+            $params = '';
+            if ($reflection->getNumberOfParameters() > 0) {
+                $paramsReflection = $reflection->getParameters();
+                $params = implode(', ', array_map(function ($param) {
+                    $type = $param->getType();
+                    $typeHint = $type ? $type->getName() . ' ' : '';
+                    return $typeHint . '$' . $param->getName();
+                }, $paramsReflection));
+            }
+            $returnType = $reflection->getReturnType();
+            $returnTypeHint = $returnType ? ': ' . $returnType->getName() : '';
+            eval('function ' . $name . '(' . $params . ')' . $returnTypeHint . ' { ' . $reflection->getBody() . ' }');
+        }
     }
-    unset($GLOBALS['model']);
+    return array_keys($functions);
 }
